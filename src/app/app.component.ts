@@ -2,6 +2,7 @@ import { Component, OnInit, resolveForwardRef } from '@angular/core';
 import { WeatherService } from './services/weather.service';
 import { PositionData } from './models/location.model';
 import { WeatherData, Period } from './models/weather.model';
+import { LocationData } from './models/location.model';
 import { formatDate } from '@angular/common';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
   ){}
   
   title = 'weather-app';
-  cityName = 'Baltimore';
+  currentLocation = '';
   positionData = <PositionData>{};
   weatherData = <Period>{};
   
@@ -39,8 +40,10 @@ export class AppComponent implements OnInit {
       }
       // Get Location Data
       this.weatherService.getLocation(positionData).subscribe({
-        next: (res) => {
-          const forecastUrl = res.properties.forecast;
+        next: (res: LocationData) => {
+          const { forecast, relativeLocation } = res.properties;
+          const forecastUrl = forecast;
+          this.currentLocation = `${relativeLocation.properties.city}, ${relativeLocation.properties.state}`;
           // Get Forecast Data from Location
           this.weatherService.getForecast(forecastUrl).subscribe({
             next: (res: WeatherData) => {
