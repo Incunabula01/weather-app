@@ -1,71 +1,71 @@
 <section class="container">
   <mat-card>
-   
-    <mat-card-header class="card-header"> 
+    <div *ngIf="getWeatherData; else showSpinner">
+      <mat-card-header class="card-header">
       
-      <mat-card-title-group>
-        <mat-card-title>{{cityName}}</mat-card-title>
-        <mat-card-subtitle>{{ getWeatherData(weatherData.main.temp)   | number: '1.0-0'}}ºF</mat-card-subtitle>
+        <mat-card-title-group>
+          <mat-card-title>{{cityName}}</mat-card-title>
+          <mat-card-subtitle>{{
+            getFieldData(weatherData.temperature)}}º{{getFieldData(weatherData.temperatureUnit)}}</mat-card-subtitle>
+      
+        </mat-card-title-group>
+      </mat-card-header>
+      
+      <mat-card-content>
         
-      </mat-card-title-group>
-    </mat-card-header>
-   
-    <mat-card-content>
-      <img src={{getWeatherDataImg()}} alt={{getWeatherData(weatherData.weather[0].description)}} mat-card-md-image />
-      <div class="more-info-label">
-        More Information
-      </div>
-     
-      <div class="info-block">
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="temp-low" width="96px"></svg-icon-sprite>
-          
-            <p>Temp Min</p>
-            <p>{{getWeatherData(weatherData.main.temp_min)}}ºF</p>
-          </div>
-          
-         
-        </div>
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="temp-high" width="96px"></svg-icon-sprite>
-          
-            <p>Temp Max</p>
-            <p>{{getWeatherData(weatherData.main.temp_max) }}ºF</p>
-          </div>
-          
-          
-        </div>
-        
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="sun-rise" width="96px"></svg-icon-sprite>
-          
-            <p>Sunrise</p>
-            <p>{{getTime(getWeatherData(weatherData.sys.sunrise))}}</p>
-          </div>
-          <hr>
-          <span>Humidity: </span>
-          {{getWeatherData(weatherData.main.humidity)}}
-          
-        </div>
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="sun-down" width="96px"></svg-icon-sprite>
-          
-            <p>Sunset</p>
-            <p>{{getTime(getWeatherData(weatherData.sys.sunset))}}</p>
-          </div>
-         
-          <hr>
-          <span>Pressure: </span>
-          <p>{{getWeatherData(weatherData.main.pressure) }}</p>
-        </div>
        
-      </div>
+        
+        <hr>
+        <div class="info-block">
+          <div class="info-block-label">
+            <div class="info-block-img">
+              <img src={{getWeatherDataImg()}} alt={{getFieldData(weatherData.shortForecast)}} mat-card-md-image />
+              <p>Forecast:</p>
+              <p>{{getFieldData(weatherData.detailedForecast)}}</p>
+            </div>
+          
+          
+          </div>
+          <div class="info-block-label">
+            <div class="info-block-img">
+              <svg-icon-sprite src="weather-rain" width="112px"></svg-icon-sprite>
+            
+              <p>Chance of Rain:</p>
+              <p>{{getFieldData(weatherData.chanceOfRain)}}</p>
+            </div>
+            
+            
+          </div>
+                       
+      
+          <div class="info-block-label">
+            <div class="info-block-img">
+              <svg-icon-sprite src="humidity" width="112px"></svg-icon-sprite>
+      
+              <p>Humidity:</p>
+              <p>{{getFieldData(weatherData.relativeHumidity.value )}}%</p>
+            </div>
+          </div>
+          <div class="info-block-label">
+            <div class="info-block-img">
+              <svg-icon-sprite src="dew-point" width="112px"></svg-icon-sprite>
+      
+              <p>Dew Point:</p>
+              <p>{{getFieldData(weatherData.dewPoint)}}º{{getFieldData(weatherData.temperatureUnit)}}</p>
+            </div>
+          </div>
+      
+        </div>
+      
+      </mat-card-content>
+      
+    </div>
+    <ng-template #showSpinner>
+      <mat-spinner width="400" height="400"></mat-spinner>
+    </ng-template>
      
-    </mat-card-content>
+   
+   
   </mat-card>
 </section>
 
