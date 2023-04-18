@@ -1,72 +1,30 @@
-<section class="container">
-  <mat-card>
+<div [ngClass]="(backgroundColor)">
+  <mat-toolbar>
+    <span *ngIf="getCurrentLocation; else showLocSpinner">
+      <span>{{currentLocation}} Forecast</span>
+    </span>
    
-    <mat-card-header class="card-header"> 
-      
-      <mat-card-title-group>
-        <mat-card-title>{{cityName}}</mat-card-title>
-        <mat-card-subtitle>{{ getWeatherData(weatherData.main.temp)   | number: '1.0-0'}}ºF</mat-card-subtitle>
-        
-      </mat-card-title-group>
-    </mat-card-header>
-   
-    <mat-card-content>
-      <img src={{getWeatherDataImg()}} alt={{getWeatherData(weatherData.weather[0].description)}} mat-card-md-image />
-      <div class="more-info-label">
-        More Information
+    <ng-template #showLocSpinner>
+      <mat-spinner diameter="34"></mat-spinner>
+    </ng-template>
+    <span class="spacer"></span>
+    <button mat-icon-button class="search-icon" aria-label="Search City3">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-toolbar>
+  <span *ngIf="getForecast; else showCardSpinner">
+    <section class="container">
+      <div class="weather-card" *ngFor="let weather of weatherData">
+        <app-weather-card periodData={{weather}}></app-weather-card>
       </div>
-     
-      <div class="info-block">
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="temp-low" width="96px"></svg-icon-sprite>
-          
-            <p>Temp Min</p>
-            <p>{{getWeatherData(weatherData.main.temp_min)}}ºF</p>
-          </div>
-          
-         
-        </div>
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="temp-high" width="96px"></svg-icon-sprite>
-          
-            <p>Temp Max</p>
-            <p>{{getWeatherData(weatherData.main.temp_max) }}ºF</p>
-          </div>
-          
-          
-        </div>
-        
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="sun-rise" width="96px"></svg-icon-sprite>
-          
-            <p>Sunrise</p>
-            <p>{{getTime(getWeatherData(weatherData.sys.sunrise))}}</p>
-          </div>
-          <hr>
-          <span>Humidity: </span>
-          {{getWeatherData(weatherData.main.humidity)}}
-          
-        </div>
-        <div class="info-block-label">
-          <div class="info-block-img">
-            <svg-icon-sprite src="sun-down" width="96px"></svg-icon-sprite>
-          
-            <p>Sunset</p>
-            <p>{{getTime(getWeatherData(weatherData.sys.sunset))}}</p>
-          </div>
-         
-          <hr>
-          <span>Pressure: </span>
-          <p>{{getWeatherData(weatherData.main.pressure) }}</p>
-        </div>
-       
-      </div>
-     
-    </mat-card-content>
-  </mat-card>
-</section>
+    </section>
+  </span>
+  <ng-template #showCardSpinner>
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</div>
+
 
 <router-outlet></router-outlet>

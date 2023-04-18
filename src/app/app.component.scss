@@ -1,12 +1,35 @@
-.info-block {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 16px;
+.mat-toolbar {
+    width: 100%;
 }
 
-svg {
-    display: inline-block;
-    all: inherit;
+.container {
+    transform: translateY(4rem);
+    justify-content: left;
+    align-items: start;
+    gap: 0.5rem;
+    width: 100%;
+    overflow-y: hidden;
+}
+
+.spinner-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ .weather-card {
+    padding: 0 0.5rem;
+ }
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.dark {
+    background-color: #002dfb;
+}
+
+.light {
+    background-color: #fbce00;
 }

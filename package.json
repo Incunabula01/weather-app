@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate:svg-sprite": "svg2sprite ./src/assets/icons ./src/assets/sprites/sprite.svg --stripAttrs fill --stripAttrs stroke --stripAttrs id"
+    "generate:svg-sprite": "svg2sprite ./src/assets/icons ./src/assets/sprites/sprite.svg  --stripAttrs id"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
     "ng-svg-icon-sprite": "^1.9.1",
+    "ngx-units-converter": "^6.0.5",
     "rxjs": "~7.8.0",
     "svg-sprite": "^2.0.2",
     "tslib": "^2.3.0",
@@ -38,7 +39,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~4.9.4",
-    "svg2sprite-cli": "2.0.0"
+    "svg2sprite-cli": "2.0.0",
+    "typescript": "~4.9.4"
   }
 }

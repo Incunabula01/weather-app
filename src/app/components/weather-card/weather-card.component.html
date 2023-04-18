@@ -1,0 +1,61 @@
+<mat-card class="weather-card">
+    <mat-card-header class="card-header">
+
+        <mat-card-title-group>
+            <mat-card-title>
+                {{(forecastData.name)}}
+            </mat-card-title>
+        <div mat-card-avatar class="example-header-image">
+            <svg-icon-sprite src={{getTitleIcon((forecastData.isDaytime))}} fill="#000" stroke="#000"></svg-icon-sprite>
+        </div>
+
+        </mat-card-title-group>
+    </mat-card-header>
+
+    <mat-card-content>
+        <hr>
+        <div class="weather-card-header">
+            <div class="info-block-img">
+                <img src={{getWeatherDataImg()}} alt={{(forecastData.shortForecast)}} mat-card-md-image />
+            </div>
+            <div class="info-block-content">
+                <h1>{{(forecastData.temperature)}}º{{(forecastData.temperatureUnit)}}</h1>
+            </div>
+        </div>
+        <h3>Forecast:</h3>
+        <p>{{(forecastData.detailedForecast)}}</p>
+        <div class="info-block">
+            <div class="info-block-label">
+                <div class="info-block-img">
+                    <svg-icon-sprite src="weather-rain" width="48px"></svg-icon-sprite>
+
+                    <p>Chance of Rain:</p>
+                    <p>{{(forecastData.chanceOfRain)}}</p>
+                </div>
+
+
+            </div>
+
+
+            <div class="info-block-label">
+                <div class="info-block-img">
+                    <svg-icon-sprite src="humidity" width="48px"></svg-icon-sprite>
+
+                    <p>Humidity:</p>
+                    <p>{{(forecastData.relativeHumidity.value )}}%</p>
+                </div>
+            </div>
+            <div class="info-block-label">
+                <div class="info-block-img">
+                    <svg-icon-sprite src="dew-point" width="48px"></svg-icon-sprite>
+
+                    <p>Dew Point:</p>
+                    <p>{{(forecastData.dewPoint)}}º{{(forecastData.temperatureUnit)}}</p>
+                </div>
+            </div>
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

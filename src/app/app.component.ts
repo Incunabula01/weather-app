@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
+import { PositionData } from './models/location.model';
 import { WeatherData } from './models/weather.model';
-import { formatDate } from '@angular/common';
+import { LocationData } from './models/location.model';
 
 @Component({
   selector: 'app-root',
@@ -15,39 +16,55 @@ export class AppComponent implements OnInit {
   constructor(
     private weatherService: WeatherService
   ){}
-
+  
   title = 'weather-app';
-  cityName = 'Baltimore';
-  weatherData = <WeatherData>{};
-    
+  currentLocation = '';
+  positionData = <PositionData>{};
+  weatherData = <Array<string>>[];
+  periodData = '';
+  backgroundColor = '';
+  
+  
   ngOnInit(): void {
-    this.weatherService.getWeatherData(this.cityName).subscribe({
-      next: (res) => {
-        this.weatherData = res;
-        console.log("za response!!", this.weatherData);
+    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+      const positionData = {
+        'latitude': position.coords.latitude,
+        'longitude': position.coords.longitude
       }
-    })
-   
+      // Get Location Data
+      this.weatherService.getLocation(positionData).subscribe({
+        next: (res: LocationData) => {
+          const { forecast, relativeLocation } = res.properties;
+          const forecastUrl = forecast;
+          this.currentLocation = `${relativeLocation.properties.city}, ${relativeLocation.properties.state}`;
+          // Get Forecast Data from Location
+          this.weatherService.getForecast(forecastUrl).subscribe({
+            next: (res: WeatherData) => {
+              this.backgroundColor = res.properties.periods[0].isDaytime ? 'light' : 'dark';
+              const weekForecast = res.properties.periods.map(item => {
+                const { temperatureUnit, dewpoint, probabilityOfPrecipitation } = item;
+                return JSON.stringify({
+                  ...item,
+                  chanceOfRain: probabilityOfPrecipitation.value ? `${probabilityOfPrecipitation.value}%` : `0%`,
+                  dewPoint: temperatureUnit === 'F' ?
+                    Math.round(dewpoint.value * 9.0 / 5.0 + 32) : Math.round(dewpoint.value)
+                })
+              })
+              this.weatherData = weekForecast;
+              console.log("forecast!", this.weatherData);
+            }
+          });
+        }
+      });
+    });
   }
 
-  getWeatherData(fieldName: string | number | undefined): number | string {
-    if(fieldName){
-      return fieldName;
-    }
-    return "N/A";
+  get getCurrentLocation(){
+    return this.currentLocation.length > 0;
   }
 
-  getWeatherDataImg(): string {
-    return `https://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}@2x.png`;
+  get getForecast(){
+    return this.weatherData.length > 0;
   }
-
-  getTime(time: string | number | undefined): string | null {
-    if(time && typeof time !== 'string'){
-      const calculateTimeZone = Math.round(this.weatherData.coord.lon / 15);
-      return formatDate(time * 1000, 'shortTime', 'en-US', `UTC${calculateTimeZone}`);
-    }
-    return null;
-  }
-
  
 }

@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from 'src/enviroments/enviroments';
+import { PositionData, LocationData } from '../models/location.model';
 import { WeatherData } from '../models/weather.model';
 import { Observable } from 'rxjs';
 
@@ -12,16 +13,16 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  getWeatherData(cityName: string): Observable<WeatherData>{
-    const { apiBasedUrl, XRapidAPIHeaderValue, XRapidAPIHostHeaderName, XRapidAPIKeyHeaderName, XRapidAPIKeyHeaderValue } = enviroment;
-    const options = {
-      headers: {
-        [XRapidAPIHostHeaderName]: XRapidAPIHeaderValue,
-        [XRapidAPIKeyHeaderName]: XRapidAPIKeyHeaderValue
-      }
-    };
-    return this.http.get<WeatherData>(`${apiBasedUrl}/city/${cityName}`, options);
+  getLocation(position: PositionData): Observable<LocationData> {
+    const { apiBasedUrl } = enviroment;
+    const { latitude, longitude } = position;
+  
+    return this.http.get<LocationData>(`${apiBasedUrl}/points/${latitude},${longitude}`);
+  }
+
+  getForecast(forecastUrl: string): Observable<WeatherData>{
    
+    return this.http.get<WeatherData>(forecastUrl);
   }
 }
 
