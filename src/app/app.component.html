@@ -1,72 +1,30 @@
-<section class="container">
-  <mat-card>
-    <div *ngIf="getWeatherData; else showSpinner">
-      <mat-card-header class="card-header">
-      
-        <mat-card-title-group>
-          <mat-card-title>{{currentLocation}}</mat-card-title>
-          <mat-card-subtitle>{{
-            getFieldData(weatherData.temperature)}}º{{getFieldData(weatherData.temperatureUnit)}}</mat-card-subtitle>
-      
-        </mat-card-title-group>
-      </mat-card-header>
-      
-      <mat-card-content>
-        
-       
-        
-        <hr>
-        <div class="info-block">
-          <div class="info-block-label">
-            <div class="info-block-img">
-              <img src={{getWeatherDataImg()}} alt={{getFieldData(weatherData.shortForecast)}} mat-card-md-image />
-              <p>Forecast:</p>
-              <p>{{getFieldData(weatherData.detailedForecast)}}</p>
-            </div>
-          
-          
-          </div>
-          <div class="info-block-label">
-            <div class="info-block-img">
-              <svg-icon-sprite src="weather-rain" width="112px"></svg-icon-sprite>
-            
-              <p>Chance of Rain:</p>
-              <p>{{getFieldData(weatherData.chanceOfRain)}}</p>
-            </div>
-            
-            
-          </div>
-                       
-      
-          <div class="info-block-label">
-            <div class="info-block-img">
-              <svg-icon-sprite src="humidity" width="112px"></svg-icon-sprite>
-      
-              <p>Humidity:</p>
-              <p>{{getFieldData(weatherData.relativeHumidity.value )}}%</p>
-            </div>
-          </div>
-          <div class="info-block-label">
-            <div class="info-block-img">
-              <svg-icon-sprite src="dew-point" width="112px"></svg-icon-sprite>
-      
-              <p>Dew Point:</p>
-              <p>{{getFieldData(weatherData.dewPoint)}}º{{getFieldData(weatherData.temperatureUnit)}}</p>
-            </div>
-          </div>
-      
-        </div>
-      
-      </mat-card-content>
-      
-    </div>
-    <ng-template #showSpinner>
-      <mat-spinner width="400" height="400"></mat-spinner>
+<div [ngClass]="(backgroundColor)">
+  <mat-toolbar>
+    <span *ngIf="getCurrentLocation; else showLocSpinner">
+      <span>{{currentLocation}} Forecast</span>
+    </span>
+   
+    <ng-template #showLocSpinner>
+      <mat-spinner diameter="34"></mat-spinner>
     </ng-template>
-     
-   
-   
-  </mat-card>
-</section>
+    <span class="spacer"></span>
+    <button mat-icon-button class="search-icon" aria-label="Search City3">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-toolbar>
+  <span *ngIf="getForecast; else showCardSpinner">
+    <section class="container">
+      <div class="weather-card" *ngFor="let weather of weatherData">
+        <app-weather-card periodData={{weather}}></app-weather-card>
+      </div>
+    </section>
+  </span>
+  <ng-template #showCardSpinner>
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</div>
+
 
 <router-outlet></router-outlet>

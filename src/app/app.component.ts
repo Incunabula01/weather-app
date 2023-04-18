@@ -1,11 +1,8 @@
-import { Component, OnInit, resolveForwardRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
 import { PositionData } from './models/location.model';
-import { WeatherData, Period } from './models/weather.model';
+import { WeatherData } from './models/weather.model';
 import { LocationData } from './models/location.model';
-import { formatDate } from '@angular/common';
-import { Observable } from 'rxjs/internal/Observable';
-
 
 @Component({
   selector: 'app-root',
@@ -23,14 +20,10 @@ export class AppComponent implements OnInit {
   title = 'weather-app';
   currentLocation = '';
   positionData = <PositionData>{};
-  weatherData = <Period>{};
+  weatherData = <Array<string>>[];
+  periodData = '';
+  backgroundColor = '';
   
-  get getWeatherData(){
-    if (Object.keys(this.weatherData).length > 0){
-      return true;
-    }
-    return false;
-  }
   
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
@@ -47,13 +40,17 @@ export class AppComponent implements OnInit {
           // Get Forecast Data from Location
           this.weatherService.getForecast(forecastUrl).subscribe({
             next: (res: WeatherData) => {
-              const { temperatureUnit, dewpoint, probabilityOfPrecipitation } = res.properties.periods[0];
-              this.weatherData = {
-                ...res.properties.periods[0],
-                chanceOfRain: probabilityOfPrecipitation.value ? `${probabilityOfPrecipitation.value}%` : `0%`,
-                dewPoint: temperatureUnit === 'F' ? 
-                  Math.round(dewpoint.value * 9.0 / 5.0 + 32) : Math.round(dewpoint.value)
-              }
+              this.backgroundColor = res.properties.periods[0].isDaytime ? 'light' : 'dark';
+              const weekForecast = res.properties.periods.map(item => {
+                const { temperatureUnit, dewpoint, probabilityOfPrecipitation } = item;
+                return JSON.stringify({
+                  ...item,
+                  chanceOfRain: probabilityOfPrecipitation.value ? `${probabilityOfPrecipitation.value}%` : `0%`,
+                  dewPoint: temperatureUnit === 'F' ?
+                    Math.round(dewpoint.value * 9.0 / 5.0 + 32) : Math.round(dewpoint.value)
+                })
+              })
+              this.weatherData = weekForecast;
               console.log("forecast!", this.weatherData);
             }
           });
@@ -62,26 +59,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getFieldData(fieldName: string | number | undefined): number | string {
-    if(fieldName){
-      return fieldName;
-    }
-    return "N/A";
+  get getCurrentLocation(){
+    return this.currentLocation.length > 0;
   }
 
-  getWeatherDataImg(): string {
-    if(this.weatherData){
-      return this.weatherData.icon;
-    }
-    return "na"
+  get getForecast(){
+    return this.weatherData.length > 0;
   }
-
-  getTime(time: string | number): string | null {
-    if (this.weatherData && time !== "N/A"){
-      return formatDate(time, 'shortTime', 'en-US');
-    }
-    return null;
-  }
-
  
 }

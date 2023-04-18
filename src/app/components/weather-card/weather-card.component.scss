@@ -1,0 +1,37 @@
+.weather-card {
+    width: 25vw;
+}
+
+.weather-card-header {
+    display: flex;
+    gap: 16px;
+    h1 {
+        font-size: 5.5rem;
+        font-weight: 100;
+        transform: translateY(2.5rem);
+    }
+}
+
+h3 {
+    margin: 0 0 0.5rem;
+}
+
+
+.info-block {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    // grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
+
+
+    
+svg {
+    display: inline-block;
+    all: inherit;
+    fill: #000;
+    stroke: #000;
+    width: 48px;
+    height: 48px;
+}
