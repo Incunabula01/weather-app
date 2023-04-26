@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
-import { PositionData } from './models/location.model';
+import { PositionData, LocationData } from './models/location.model';
+import { LatLong } from './models/location-search.model';
 import { WeatherData } from './models/weather.model';
-import { LocationData } from './models/location.model';
 
 @Component({
   selector: 'app-root',
@@ -27,36 +27,20 @@ export class AppComponent implements OnInit {
   
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-      const positionData = {
+      this.positionData = {
         'latitude': position.coords.latitude,
         'longitude': position.coords.longitude
       }
-      // Get Location Data
-      this.weatherService.getLocation(positionData).subscribe({
-        next: (res: LocationData) => {
-          const { forecast, relativeLocation } = res.properties;
-          const forecastUrl = forecast;
-          this.currentLocation = `${relativeLocation.properties.city}, ${relativeLocation.properties.state}`;
-          // Get Forecast Data from Location
-          this.weatherService.getForecast(forecastUrl).subscribe({
-            next: (res: WeatherData) => {
-              this.backgroundColor = res.properties.periods[0].isDaytime ? 'light' : 'dark';
-              const weekForecast = res.properties.periods.map(item => {
-                const { temperatureUnit, dewpoint, probabilityOfPrecipitation } = item;
-                return JSON.stringify({
-                  ...item,
-                  chanceOfRain: probabilityOfPrecipitation.value ? `${probabilityOfPrecipitation.value}%` : `0%`,
-                  dewPoint: temperatureUnit === 'F' ?
-                    Math.round(dewpoint.value * 9.0 / 5.0 + 32) : Math.round(dewpoint.value)
-                })
-              })
-              this.weatherData = weekForecast;
-              console.log("forecast!", this.weatherData);
-            }
-          });
-        }
-      });
+      this.getLocationForecast(this.positionData);
     });
+  }
+
+  onItemSelected(event: LatLong){
+    this.positionData = {
+      'latitude': event.latitude,
+      'longitude': event.longitude
+    }
+    this.getLocationForecast(this.positionData);
   }
 
   get getCurrentLocation(){
@@ -66,5 +50,32 @@ export class AppComponent implements OnInit {
   get getForecast(){
     return this.weatherData.length > 0;
   }
- 
+  
+  getLocationForecast(location: PositionData){
+    // Get Location Data
+    this.weatherService.getLocation(location).subscribe({
+      next: (res: LocationData) => {
+        const { forecast, relativeLocation } = res.properties;
+        const forecastUrl = forecast;
+        this.currentLocation = `${relativeLocation.properties.city}, ${relativeLocation.properties.state}`;
+        // Get Forecast Data from Location
+        this.weatherService.getForecast(forecastUrl).subscribe({
+          next: (res: WeatherData) => {
+            this.backgroundColor = res.properties.periods[0].isDaytime ? 'light' : 'dark';
+            const weekForecast = res.properties.periods.map(item => {
+              const { temperatureUnit, dewpoint, probabilityOfPrecipitation } = item;
+              return JSON.stringify({
+                ...item,
+                chanceOfRain: probabilityOfPrecipitation.value ? `${probabilityOfPrecipitation.value}%` : `0%`,
+                dewPoint: temperatureUnit === 'F' ?
+                  Math.round(dewpoint.value * 9.0 / 5.0 + 32) : Math.round(dewpoint.value)
+              })
+            })
+            this.weatherData = weekForecast;
+            console.log("forecast!", this.weatherData);
+          }
+        });
+      }
+    });
+  }
 }
