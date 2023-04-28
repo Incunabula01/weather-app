@@ -13,12 +13,18 @@ import { HttpClientModule} from "@angular/common/http";
 import { WeatherService } from './services/weather.service';
 import { IconSpriteModule } from 'ng-svg-icon-sprite';
 import { WeatherCardComponent } from './components/weather-card/weather-card.component';
+import { LocationSearchComponent } from './components/location-search/location-search.component';
+import { LocationSearchService } from './services/location-search.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherCardComponent,
+    LocationSearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,9 +37,13 @@ import { WeatherCardComponent } from './components/weather-card/weather-card.com
     IconSpriteModule.forRoot({ path: 'assets/sprites/sprite.svg' }),
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [WeatherService],
+  providers: [WeatherService, LocationSearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
