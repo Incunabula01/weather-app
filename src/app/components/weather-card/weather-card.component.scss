@@ -1,6 +1,4 @@
-.weather-card {
-    width: 25vw;
-}
+
 
 .weather-card-header {
     display: flex;
@@ -20,7 +18,6 @@ h3 {
 .info-block {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    // grid-template-rows: repeat(2, 1fr);
     grid-column-gap: 16px;
     grid-row-gap: 16px;
 }
@@ -35,3 +32,26 @@ svg {
     width: 48px;
     height: 48px;
 }
+
+/* Mobile Devices */
+@media only screen and (max-width: 767px) {
+    /* CSS styles for mobile devices */
+    .weather-card {
+            width: 100%;
+        }
+}
+
+/* Tablets */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    /* CSS styles for tablets */
+   
+}
+
+/* Desktops and Laptops */
+@media only screen and (min-width: 1024px) and (max-width: 1919px) {
+    /* CSS styles for desktops and laptops */
+    .weather-card {
+            width: 25vw;
+        }
+}
+

@@ -17,6 +17,7 @@ import { LocationSearchComponent } from './components/location-search/location-s
 import { LocationSearchService } from './services/location-search.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -39,6 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatButtonModule,
     MatAutocompleteModule,
+    MatExpansionModule,
     MatInputModule,
     FormsModule,
     ReactiveFormsModule

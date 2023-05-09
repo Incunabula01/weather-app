@@ -1,5 +1,7 @@
 <div [ngClass]="(backgroundColor)">
   <mat-toolbar>
+   
+
     <span *ngIf="getCurrentLocation; else showLocSpinner">
       <span>{{currentLocation}} Forecast</span>
     </span>
@@ -8,7 +10,19 @@
       <mat-spinner diameter="34"></mat-spinner>
     </ng-template>
     <span class="spacer"></span>
+    <span *ngIf="getMobileMenu; else showMenu">
+      <button mat-icon-button (click)="toggleAccordion()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="isAccordionExpanded">
+          <app-location-search (selectedResult)="onItemSelected($event)"></app-location-search>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </span>
+  <ng-template #showMenu>
     <app-location-search (selectedResult)="onItemSelected($event)"></app-location-search>
+  </ng-template>
   
   </mat-toolbar>
   <span *ngIf="getForecast; else showCardSpinner">

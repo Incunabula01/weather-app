@@ -3,12 +3,8 @@
 }
 
 .container {
-    transform: translateY(4rem);
-    justify-content: left;
-    align-items: start;
     gap: 0.5rem;
     width: 100%;
-    overflow-y: hidden;
 }
 
 .spinner-container {
@@ -33,3 +29,51 @@
 .light {
     background-color: #fbce00;
 }
+
+/* Mobile Devices */
+@media only screen and (max-width: 767px) {
+    /* CSS styles for mobile devices */
+    .container {
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        overflow-y: hidden;
+        height: 100%;
+        padding: 1rem 0;
+    }
+
+    .mat-accordion {
+        position: absolute;
+        left: 0;
+        top: 56px;
+        z-index: 900;
+        width: 100%;
+        .mat-expansion-panel {
+            border-radius: 0 0 4px 4px;
+        }
+        .mat-expansion-panel-body {
+            padding: 0 24px;
+        }
+    }
+}
+
+/* Tablets */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    /* CSS styles for tablets */
+    .container {
+        flex-direction: row;
+        justify-content: left;
+        align-items: start;
+        overflow-y: auto;
+        transform: translateY(3rem);
+    }
+}
+
+/* Desktops and Laptops */
+@media only screen and (min-width: 1024px) and (max-width: 1919px) {
+    /* CSS styles for desktops and laptops */
+    .container {
+        transform: translateY(3rem);
+    }
+}
+

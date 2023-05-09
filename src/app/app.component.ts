@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, HostListener, OnChanges, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
 import { PositionData, LocationData } from './models/location.model';
 import { LatLong } from './models/location-search.model';
@@ -23,7 +23,21 @@ export class AppComponent implements OnInit {
   weatherData = <Array<string>>[];
   periodData = '';
   backgroundColor = '';
-  
+  isMobile: boolean = false;
+  isAccordionExpanded: boolean = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: { target: { innerWidth: number; }; }) {
+    if (event.target.innerWidth <= 600) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
+  }
+
+  toggleAccordion(){
+    this.isAccordionExpanded = !this.isAccordionExpanded;
+  }
   
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
@@ -41,6 +55,9 @@ export class AppComponent implements OnInit {
       'longitude': event.longitude
     }
     this.getLocationForecast(this.positionData);
+    if(this.isMobile){
+      this.toggleAccordion()
+    }
   }
 
   get getCurrentLocation(){
@@ -49,6 +66,10 @@ export class AppComponent implements OnInit {
 
   get getForecast(){
     return this.weatherData.length > 0;
+  }
+
+  get getMobileMenu(){
+    return this.isMobile;
   }
   
   getLocationForecast(location: PositionData){
@@ -72,7 +93,6 @@ export class AppComponent implements OnInit {
               })
             })
             this.weatherData = weekForecast;
-            console.log("forecast!", this.weatherData);
           }
         });
       }

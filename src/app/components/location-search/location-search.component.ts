@@ -13,18 +13,15 @@ import { LocationSearchService } from 'src/app/services/location-search.service'
 })
 export class LocationSearchComponent {
 
-
-  locationQuery!: string;
-  options: string[] = [];
-  filteredOptions!: Observable<string[]>;
-
   searchControl = new FormControl();
+
+  locationQuery: string = '';
+  options: string[] = [];
+  filteredOptions: Observable<string[]> = of([]);
+  locationResults: LatLongArray = [];
 
   @Output()
   selectedResult = new EventEmitter<LatLong>;
-
-
-  locationResults: LatLongArray = [];
 
   constructor(
     private locationService: LocationSearchService
@@ -39,7 +36,6 @@ export class LocationSearchComponent {
   search(event: Event): void {
     const target = (event.target as HTMLInputElement).value;
 
-    console.log("query", target);
     if(target.length > 3){
       this.locationService.searchCity(target).subscribe({
         next: (data: LocationSearchResults) => {
@@ -53,9 +49,9 @@ export class LocationSearchComponent {
                 locationName: item.place_name
               }
             });
-            console.log("locationResults", this.locationResults);
+            
             this.options = features.map(item => item.place_name);
-            console.log("options", this.options);
+           
 
           } else {
             console.log(`No results found for ${this.locationQuery}`);
@@ -67,19 +63,24 @@ export class LocationSearchComponent {
     
   }
   
-  private _filter(name: string): any[] {
+  private _filter(name: string): string[] {
     const filterValue = name.toLowerCase();
+    console.log('filter opts', filterValue);
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
+
   displayFn(option: any): string {
-    return option && option.display_name ? option.display_name : '';
+    return option && option.locationName ? option.locationName : '';
   }
+
 
   onSelectOption(event: MatAutocompleteSelectedEvent): void {
     const filteredOption = this.locationResults.filter(result => result.locationName === event.option.value);
-    console.log('filtered options', filteredOption);
-    this.selectedResult.emit(filteredOption[0]);
+    
+    if (filteredOption.length > 0) {
+      this.selectedResult.emit(filteredOption[0]);
+    }
   }
   
 }
