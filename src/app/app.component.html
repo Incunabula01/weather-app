@@ -1,7 +1,5 @@
 <div [ngClass]="(backgroundColor)">
   <mat-toolbar>
-   
-
     <span *ngIf="getCurrentLocation; else showLocSpinner">
       <span>{{currentLocation}} Forecast</span>
     </span>

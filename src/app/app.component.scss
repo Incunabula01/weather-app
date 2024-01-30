@@ -1,3 +1,4 @@
+
 .mat-toolbar {
     width: 100%;
 }
@@ -38,6 +39,7 @@
         justify-content: start;
         align-items: start;
         overflow-y: hidden;
+        overflow-x: auto;
         height: 100%;
         padding: 1rem 0;
     }
@@ -64,7 +66,7 @@
         flex-direction: row;
         justify-content: left;
         align-items: start;
-        overflow-y: auto;
+        overflow-y: hidden;
         transform: translateY(3rem);
     }
 }
@@ -72,6 +74,7 @@
 /* Desktops and Laptops */
 @media only screen and (min-width: 1024px) and (max-width: 1919px) {
     /* CSS styles for desktops and laptops */
+
     .container {
         transform: translateY(3rem);
     }
