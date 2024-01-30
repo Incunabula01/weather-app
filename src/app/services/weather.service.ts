@@ -21,7 +21,6 @@ export class WeatherService {
   }
 
   getForecast(forecastUrl: string): Observable<WeatherData>{
-   
     return this.http.get<WeatherData>(forecastUrl);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnChanges, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
 import { PositionData, LocationData } from './models/location.model';
 import { LatLong } from './models/location-search.model';
@@ -8,9 +8,9 @@ import { WeatherData } from './models/weather.model';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  template: `
-      <svg-icon iconName={{icon}} class="icon"></svg-icon>
-  `
+  // template: `
+  //     <svg-icon iconName={{icon}} class="icon"></svg-icon>
+  // `
 })
 export class AppComponent implements OnInit {
   constructor(

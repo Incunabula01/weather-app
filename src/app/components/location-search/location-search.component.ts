@@ -41,7 +41,6 @@ export class LocationSearchComponent {
         next: (data: LocationSearchResults) => {
           if (data.features.length > 0) {
             const { features } = data;
-            console.log('response', features);
             this.locationResults = features.map(item => {
               return {
                 latitude: Number(item.center[1]),
@@ -54,7 +53,7 @@ export class LocationSearchComponent {
            
 
           } else {
-            console.log(`No results found for ${this.locationQuery}`);
+            console.error(`No results found for ${this.locationQuery}`);
           }
         }
 
@@ -65,7 +64,6 @@ export class LocationSearchComponent {
   
   private _filter(name: string): string[] {
     const filterValue = name.toLowerCase();
-    console.log('filter opts', filterValue);
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
